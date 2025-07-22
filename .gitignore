@@ -1,0 +1,5 @@
+.env
+node_modules/
+sendy/
+*.zip
+.DS_Store

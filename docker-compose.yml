@@ -1,0 +1,43 @@
+
+version: '3.8'
+
+services:
+  sendy:
+    build: .
+    container_name: sendy_app
+    restart: always
+    
+    ports:
+      - "8080:80"
+      - "8443:443"
+    environment:
+      - APP_URL=${APP_URL}
+      - DB_HOST=db
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+    depends_on:
+      - db
+    networks:
+      - sendy-network
+
+  db:
+    image: mysql:8.0
+    container_name: sendy_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - sendy-db-data:/var/lib/mysql
+    networks:
+      - sendy-network
+
+volumes:
+  sendy-db-data:
+
+networks:
+  sendy-network:
+    driver: bridge
