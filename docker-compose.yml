@@ -7,17 +7,22 @@ services:
     container_name: sendy_app
     restart: always
     
-    ports:
-      - "8080:80"
-      - "8443:443"
+    
     environment:
       - APP_URL=${APP_URL}
       - DB_HOST=db
       - DB_DATABASE=${DB_DATABASE}
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - 'curl -f http://127.0.0.1:80/'
+      interval: 5s
+      timeout: 20s
+      retries: 10
     depends_on:
-      - db
+      db
     networks:
       - sendy-network
 
