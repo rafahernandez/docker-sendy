@@ -20,7 +20,7 @@ COPY sendy-6.1.3.zip /tmp/sendy.zip
 RUN unzip /tmp/sendy.zip -d /var/www/html/ && rm /tmp/sendy.zip
 
 # Set permissions
-RUN sed -i "s|define('APP_PATH', getenv('SENDY_PROTOCOL') . '://' . getenv('SENDY_FQDN'));|define('APP_PATH', getenv('APP_URL'));|g" /var/www/html/includes/config.php
+RUN sed -i "s/define('APP_PATH', getenv('SENDY_PROTOCOL') . ':\/\/' . getenv('SENDY_FQDN'));/define('APP_PATH', getenv('APP_URL'));/g" /var/www/html/includes/config.php
 RUN chown -R www-data:www-data /var/www/html
 
 # Expose port 80
